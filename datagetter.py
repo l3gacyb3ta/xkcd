@@ -17,15 +17,18 @@ infodata = {}
 def download(start, end):
     infodata = {}
     for num in range(start, end, -1):
-        comic = requests.get('https://xkcd.com/' + str(num) + '/info.0.json')
-        comicjson = comic.json()
+        try:
+            comic = requests.get('https://xkcd.com/' + str(num) + '/info.0.json')
+            comicjson = comic.json()
 
-        infodata[str(num)] = {'title': comicjson['safe_title'],
-                              'alt': comicjson['alt']}
+            infodata[str(num)] = {'title': comicjson['safe_title'],
+                                'alt': comicjson['alt']}
 
-        print("\nGetting image #{}".format(
-            comicjson['num']))
-    
+            print("\nGetting image #{}".format(
+                comicjson['num']))
+        except:
+            continue
+        
     print(infodata)
 
     with open('data{}.json'.format(str(start)), 'w') as f:
